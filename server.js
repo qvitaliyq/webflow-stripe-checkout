@@ -22,6 +22,8 @@ const productCatalog = {
 app.post("/create-checkout-session", async (req, res) => {
   try {
     const { cart, customer } = req.body;
+    console.log("REQ BODY:", req.body);
+    console.log("CUSTOMER:", customer);
 
     console.log("CART FROM FRONTEND:", cart);
     console.log("CUSTOMER FROM FRONTEND:", customer);
@@ -49,21 +51,23 @@ app.post("/create-checkout-session", async (req, res) => {
       };
     });
 
-    const session = await stripe.checkout.sessions.create({
-      customer_email: customer?.email || undefined,
-      metadata: {
-        fullName: customer?.fullName || "",
-        phone: customer?.phone || "",
-        address: customer?.address || "",
-        country: customer?.country || "",
-        city: customer?.city || "",
-        postcode: customer?.postcode || ""
-      },
-      mode: "payment",
-      line_items,
-      success_url: "https://www.65xgroup.com/nl/payment",
-      cancel_url: "https://www.65xgroup.com/nl/cart"
-    });
+const session = await stripe.checkout.sessions.create({
+  customer_email: customer?.email || undefined,
+  metadata: {
+    debugFullName: customer?.fullName || "EMPTY",
+    debugEmail: customer?.email || "EMPTY",
+    debugPhone: customer?.phone || "EMPTY",
+    debugAddress: customer?.address || "EMPTY",
+    debugCountry: customer?.country || "EMPTY",
+    debugCity: customer?.city || "EMPTY",
+    debugPostcode: customer?.postcode || "EMPTY",
+    paymentMethod: "pay_now"
+  },
+  mode: "payment",
+  line_items,
+  success_url: "https://www.65xgroup.com/nl/payment?session_id={CHECKOUT_SESSION_ID}",
+  cancel_url: "https://www.65xgroup.com/nl/cart"
+});
 
     console.log("STRIPE SESSION CREATED:", session.id);
 

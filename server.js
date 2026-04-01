@@ -9,11 +9,11 @@ app.use(cors());
 app.use(express.json());
 
 const productCatalog = {
-  "format-online-btn": {
+  "my-business-strategy-online": {
     name: "Mijn bedrijfsstrategie (Online)",
     price: 4800
   },
-  "format-physical-btn": {
+  "my-business-strategy-physical": {
     name: "Mijn bedrijfsstrategie (Physical)",
     price: 6800
   }

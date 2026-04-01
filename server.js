@@ -23,6 +23,9 @@ app.post("/create-checkout-session", async (req, res) => {
   try {
     const { cart, customer } = req.body;
 
+    console.log("CART FROM FRONTEND:", cart);
+    console.log("CUSTOMER FROM FRONTEND:", customer);
+
     if (!Array.isArray(cart) || cart.length === 0) {
       return res.status(400).json({ error: "Cart is empty" });
     }
@@ -65,6 +68,8 @@ app.post("/create-checkout-session", async (req, res) => {
       success_url: "https://www.65xgroup.com/nl/payment",
       cancel_url: "https://www.65xgroup.com/nl/cart"
     });
+
+    console.log("STRIPE SESSION CREATED:", session.id);
 
     res.json({ url: session.url });
   } catch (error) {

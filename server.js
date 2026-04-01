@@ -51,10 +51,6 @@ app.post("/create-checkout-session", async (req, res) => {
 
     const session = await stripe.checkout.sessions.create({
       customer_email: customer?.email || undefined,
-      billing_address_collection: "required",
-      phone_number_collection: {
-        enabled: true
-      },
       metadata: {
         fullName: customer?.fullName || "",
         phone: customer?.phone || "",

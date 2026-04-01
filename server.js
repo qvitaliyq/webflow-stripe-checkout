@@ -21,7 +21,7 @@ const productCatalog = {
 
 app.post("/create-checkout-session", async (req, res) => {
   try {
-    const { cart } = req.body;
+    const { cart, customer } = req.body;
 
     if (!Array.isArray(cart) || cart.length === 0) {
       return res.status(400).json({ error: "Cart is empty" });
@@ -47,6 +47,19 @@ app.post("/create-checkout-session", async (req, res) => {
     });
 
     const session = await stripe.checkout.sessions.create({
+      customer_email: customer?.email || undefined,
+      billing_address_collection: "required",
+      phone_number_collection: {
+        enabled: true
+      },
+      metadata: {
+        fullName: customer?.fullName || "",
+        phone: customer?.phone || "",
+        address: customer?.address || "",
+        country: customer?.country || "",
+        city: customer?.city || "",
+        postcode: customer?.postcode || ""
+      },
       mode: "payment",
       line_items,
       success_url: "https://www.65xgroup.com/nl/payment",

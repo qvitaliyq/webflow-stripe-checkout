@@ -19,6 +19,11 @@ const productCatalog = {
   }
 };
 
+
+app.get("/ping", (req, res) => {
+  console.log("PING received");
+  res.status(200).send("ok");
+});
 app.post("/create-checkout-session", async (req, res) => {
   try {
     const { cart, customer } = req.body;
